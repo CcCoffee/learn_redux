@@ -1,8 +1,13 @@
-import { CHANGE_INPUT, ADD_TODO_ITEM, REMOVE_TODO_ITEM } from "./actionTypes";
+import {
+  CHANGE_INPUT,
+  ADD_TODO_ITEM,
+  REMOVE_TODO_ITEM,
+  FETCH_LIST,
+} from "./actionTypes";
 
 const initState = {
   inputValue: "Input item",
-  list: ["test"],
+  list: [],
 };
 
 const reducer = (previousState = initState, action) => {
@@ -19,6 +24,11 @@ const reducer = (previousState = initState, action) => {
   if (action.type === REMOVE_TODO_ITEM) {
     const newState = JSON.parse(JSON.stringify(previousState));
     newState.list.splice(action.value, 1);
+    return newState;
+  }
+  if (action.type === FETCH_LIST) {
+    const newState = JSON.parse(JSON.stringify(previousState));
+    newState.list = action.value;
     return newState;
   }
   return previousState;
