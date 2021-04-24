@@ -6,6 +6,7 @@ import {
   fetchTodoListAction,
 } from "../store/actionCreator";
 import { connect } from "react-redux";
+import TodoListUI from "./TodoListUI";
 
 // 可以看到，使用了 react-redux 并不影响 redux-saga 等 redux 插件的编码方式
 // 但是在本组件中消除了大量的模版代码，如在构造方法中绑定this和store.state，
@@ -18,23 +19,14 @@ class TodoList extends Component {
 
   render() {
     return (
-      <div style={{ margin: 10 }}>
-        <div>
-          <input
-            type="text"
-            value={this.props.inputValue}
-            onChange={(e) => this.props.onInputChange(e)}
-          />
-          <button onClick={this.props.onSubmit}>Submit</button>
-        </div>
-        <ul>
-          {this.props.list.map((item, index) => (
-            <li key={index} onClick={() => this.props.removeItem(index)}>
-              {item}
-            </li>
-          ))}
-        </ul>
-      </div>
+      <TodoListUI
+        inputValue={this.props.inputValue}
+        list={this.props.list}
+        fetchTodoList={this.props.fetchTodoList}
+        onSubmit={this.props.onSubmit}
+        onInputChange={this.props.onInputChange}
+        removeItem={this.props.removeItem}
+      />
     );
   }
 }
@@ -55,4 +47,6 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
+// connect的作用是把UI组件（无状态组件）和业务逻辑代码的分开，
+// 然后通过connect再链接到一起，让代码更加清晰和易于维护。这也是React-Redux最大的优点。
 export default connect(mapStateToProps, mapDispatchToProps)(TodoList);
