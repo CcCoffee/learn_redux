@@ -15,7 +15,6 @@ class TodoList extends Component {
     this.onInputChange.bind(this);
     this.removeItem.bind(this);
     this.storeChagne = this.storeChagne.bind(this);
-    this.fetchListViaHttp.bind(this);
     // 订阅 store change 事件
     store.subscribe(this.storeChagne);
   }
@@ -38,16 +37,9 @@ class TodoList extends Component {
     store.dispatch(removeTodoItemAction(index));
   }
 
-  async fetchListViaHttp() {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    return ["Item 1", "Item 2"];
-  }
-
   // 由于 redux 规定 reducer 中只能包含纯函数，副作用的代码写在了 Component 中
   componentDidMount() {
-    this.fetchListViaHttp().then((resp) => {
-      store.dispatch(fetchTodoListAction(resp));
-    });
+    store.dispatch(fetchTodoListAction());
   }
 
   render() {

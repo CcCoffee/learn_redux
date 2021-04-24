@@ -3,6 +3,7 @@ import {
   ADD_TODO_ITEM,
   REMOVE_TODO_ITEM,
   FETCH_LIST,
+  UPDATE_LIST,
 } from "./actionTypes";
 
 export const changeInputAction = (e) => ({
@@ -19,7 +20,11 @@ export const removeTodoItemAction = (index) => ({
   value: index,
 });
 
-export const fetchTodoListAction = (list) => ({
+export const fetchTodoListAction = () => ({
   type: FETCH_LIST,
-  value: list,
+});
+
+export const updateListAction = (list) => ({
+  type: UPDATE_LIST,
+  payload: list,
 });

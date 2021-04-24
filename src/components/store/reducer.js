@@ -2,7 +2,7 @@ import {
   CHANGE_INPUT,
   ADD_TODO_ITEM,
   REMOVE_TODO_ITEM,
-  FETCH_LIST,
+  UPDATE_LIST,
 } from "./actionTypes";
 
 const initState = {
@@ -26,9 +26,9 @@ const reducer = (previousState = initState, action) => {
     newState.list.splice(action.value, 1);
     return newState;
   }
-  if (action.type === FETCH_LIST) {
+  if (action.type === UPDATE_LIST) {
     const newState = JSON.parse(JSON.stringify(previousState));
-    newState.list = action.value;
+    newState.list = action.payload;
     return newState;
   }
   return previousState;
