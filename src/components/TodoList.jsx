@@ -1,45 +1,19 @@
 import React, { Component } from "react";
-import store from "./store";
 import {
   changeInputAction,
   addTodoItemAction,
   removeTodoItemAction,
   fetchTodoListAction,
-} from "./store/actionCreator";
+} from "../store/actionCreator";
+import { connect } from "react-redux";
 
+// 可以看到，使用了 react-redux 并不影响 redux-saga 等 redux 插件的编码方式
+// 但是在本组件中消除了大量的模版代码，如在构造方法中绑定this和store.state，
+// 登记 storeChange 事件处理方法等。
 class TodoList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = store.getState();
-    this.onSubmit.bind(this);
-    this.onInputChange.bind(this);
-    this.removeItem.bind(this);
-    this.storeChagne = this.storeChagne.bind(this);
-    // 订阅 store change 事件
-    store.subscribe(this.storeChagne);
-  }
-
-  // 将store 的 state 与 组件的 state 绑定
-  // 页面初始化时会发生一个 store change 事件
-  storeChagne() {
-    this.setState(store.getState());
-  }
-
-  onSubmit() {
-    store.dispatch(addTodoItemAction());
-  }
-
-  onInputChange(e) {
-    store.dispatch(changeInputAction(e));
-  }
-
-  removeItem(index) {
-    store.dispatch(removeTodoItemAction(index));
-  }
-
   // 由于 redux 规定 reducer 中只能包含纯函数，副作用的代码写在了 Component 中
   componentDidMount() {
-    store.dispatch(fetchTodoListAction());
+    this.props.fetchTodoList();
   }
 
   render() {
@@ -48,14 +22,14 @@ class TodoList extends Component {
         <div>
           <input
             type="text"
-            value={this.state.inputValue}
-            onChange={(e) => this.onInputChange(e)}
+            value={this.props.inputValue}
+            onChange={(e) => this.props.onInputChange(e)}
           />
-          <button onClick={this.onSubmit}>Submit</button>
+          <button onClick={this.props.onSubmit}>Submit</button>
         </div>
         <ul>
-          {this.state.list.map((item, index) => (
-            <li key={index} onClick={() => this.removeItem(index)}>
+          {this.props.list.map((item, index) => (
+            <li key={index} onClick={() => this.props.removeItem(index)}>
               {item}
             </li>
           ))}
@@ -65,4 +39,20 @@ class TodoList extends Component {
   }
 }
 
-export default TodoList;
+const mapStateToProps = (state) => {
+  return {
+    inputValue: state.inputValue,
+    list: state.list,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchTodoList: () => dispatch(fetchTodoListAction()),
+    onSubmit: () => dispatch(addTodoItemAction()),
+    onInputChange: (e) => dispatch(changeInputAction(e)),
+    removeItem: (index) => dispatch(removeTodoItemAction(index)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodoList);
