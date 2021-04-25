@@ -1,4 +1,7 @@
-export const fetchListViaHttp = async () => {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  return ["Item 1", "Item 2"];
+export const fetchListViaHttp = () => {
+  return fetch("/todos", {
+    method: "GET",
+  })
+    .then((response) => ({ response }))
+    .catch((error) => ({ error }));
 };
