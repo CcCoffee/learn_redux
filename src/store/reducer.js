@@ -5,12 +5,12 @@ import {
   UPDATE_LIST,
 } from "./actionTypes";
 
-const initState = {
-  inputValue: "Input item",
+const defaultState = {
+  inputValue: "Please input",
   list: [],
 };
 
-const reducer = (previousState = initState, action) => {
+const reducer = (previousState = defaultState, action) => {
   if (action.type === CHANGE_INPUT) {
     const newState = JSON.parse(JSON.stringify(previousState));
     newState.inputValue = action.value;
@@ -19,6 +19,7 @@ const reducer = (previousState = initState, action) => {
   if (action.type === ADD_TODO_ITEM) {
     const newState = JSON.parse(JSON.stringify(previousState));
     newState.list.unshift(newState.inputValue);
+    newState.inputValue = "";
     return newState;
   }
   if (action.type === REMOVE_TODO_ITEM) {

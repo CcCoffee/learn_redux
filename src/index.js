@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import TodoList from "./components/TodoList";
+import TodoListContainer from "./containers/TodoListContainer";
 import { Provider } from "react-redux";
 import store from "./store";
 
@@ -34,7 +34,7 @@ ReactDOM.render(
     <Switch>
       <Route exact path="/">
         <Provider store={store}>
-          <TodoList />
+          <TodoListContainer />
         </Provider>
       </Route>
       <Route path="/about">
