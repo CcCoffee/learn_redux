@@ -13,6 +13,7 @@ const props = {
 };
 const enzymeWrapper = shallow(<TodoList {...props} />);
 
+// 纯函数组件中主要测试用户行为（如 click 事件）是否能触发 props 中的各个事件处理器方法
 describe("<TodoList />", () => {
   test("should render 1 button tag", () => {
     expect(enzymeWrapper.find("button")).toHaveLength(1);
