@@ -4,6 +4,7 @@ import {
   REMOVE_TODO_ITEM,
   FETCH_LIST,
   UPDATE_LIST,
+  FAIL_FETCH,
 } from "./actionTypes";
 
 export const changeInputAction = (e) => ({
@@ -27,4 +28,9 @@ export const fetchTodoListAction = () => ({
 export const updateListAction = (list) => ({
   type: UPDATE_LIST,
   payload: list,
+});
+
+export const failFetchAction = (error) => ({
+  type: FAIL_FETCH,
+  payload: error.message,
 });
